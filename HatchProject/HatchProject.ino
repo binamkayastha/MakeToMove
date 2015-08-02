@@ -1,17 +1,27 @@
 unsigned long startTime;
+unsigned long startTime2;
 int state = 0;
+int count2 = 0;
 int count = 0;
+int count2 = 0;
 int LEDsOn[] = {0,1,2,3,4,5};
-int currentState;
+int LEDsOn2[] = {0,1,2,3,4,5};
+int currentState; //reusable
 
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
 
-  //3 Inputs into the decoder to produce 8 Inputs
+  //3 Inputs into the decoder to produce 8 Outputs
   pinMode(2, OUTPUT);
   pinMode(3, OUTPUT);
   pinMode(4, OUTPUT);
+  
+  //3 Inputs into the decode2 to produce 8 Outputs
+  pinMode(5, OUTPUT);
+  pinMode(6, OUTPUT);
+  pinMode(7, OUTPUT);
+
 
   //The input of wheel excersize machine
   pinMode(10, INPUT);
@@ -22,6 +32,10 @@ void setup() {
   //G2A and G2B Low (Connected in circuitry)
   pinMode(12, OUTPUT);
   pinMode(13, OUTPUT);
+  
+  //Initializing start times
+  startTime = millis();
+  startTime2 = millis();
 }
 
 void loop() {
