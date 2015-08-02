@@ -70,6 +70,35 @@ void loop() {
     count = 0;
   } 
   
+  currentState = digitalRead(11);
+  if(millis()-startTime > 60000) {
+    level2 = 5;
+  } else if(millis()-startTime > 50000) {
+    level2 = 4;
+  } else if (millis()-startTime > 40000) {
+    level2 = 3;
+  } else if (millis()-startTime > 30000) {
+    level2 = 2;
+  } else if (millis()-startTime > 7000) {
+    level2 = 1;
+  } else if (millis()-startTime > 5000) {
+    level2 = 0;
+  }
+  if (state != currentState) {
+    state2 = currentState;
+    count2 = 0; 
+  } else {
+    count2++;
+  } 
+
+  if (count > 50) {
+    Serial.println("Reset");
+    level2 = 0;
+    startTime = millis();
+    count = 0;
+  } 
+  
+  
   turnOnLEDsAt(LEDsOn, level, level2);
   
   delay(25);
