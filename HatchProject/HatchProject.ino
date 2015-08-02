@@ -10,6 +10,9 @@ int currentState; //reusable
 int level = 0;
 int level2 = 0;
 
+int i = 0;
+int j = 0;
+
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
@@ -105,14 +108,35 @@ void loop() {
 }
 
 void turnOnLEDsAt(int LEDs[], int level, int level2){
-  Serial.print("At LEVEL: ");
+  Serial.print("LEVEL1 At: ");
   Serial.println(level);
-  for(int i=0; i < level+1; i++){
-    turnOnLEDAt(LEDs[i]);
+  Serial.print("LEVEL2 At: ");
+  Serial.println(leve2);
+  //The level that is larger, did a complete loop before
+  if(level > level2) {
+    i = 0;
+  } else if (level2 > level) {
+    j = 0;
+  } else { //if(level == level2)
+    i = 0;
+    j = 0;
+  }
+    
+  for(i; i < max(level, level2); i++){
+    //The next two if statmenets are there for the lower level,
+    //  so that the it keeps looping, even with the second one.
+    if (i>level) {
+      i = 0;
+    }
+    if (j>level2) {
+      j = 0;
+    }
+    turnOnLEDAt(i, j);
+    j++;
   }
 }
 
-void turnOnLEDAt(int pos, int machine){
+void turnOnLEDAt(int pos, int pos2){
   int a, b, c;
   a = b = c = 0;
   
@@ -121,15 +145,18 @@ void turnOnLEDAt(int pos, int machine){
   b = ((int) (pos / 2)) % 2;
   c = pos / 4;
   
-  if(machine == 1) {
-    digitalWrite(2, c);
-    digitalWrite(3, b);
-    digitalWrite(4, a);
-  } else if (machine == 2) {
-    digitalWrite(5, c);
-    digitalWrite(6, b);
-    digitalWrite(7, a);
-  }
+  digitalWrite(2, c);
+  digitalWrite(3, b);
+  digitalWrite(4, a);
+  
+  // assume pos2 max is 8
+  a = pos2 %2;
+  b = ((int) (pos2 / 2)) % 2;
+  c = pos2 / 4;
+  digitalWrite(5, c);
+  digitalWrite(6, b);
+  digitalWrite(7, a);
+  
   
   digitalWrite(12, LOW);
   digitalWrite(13, HIGH);
