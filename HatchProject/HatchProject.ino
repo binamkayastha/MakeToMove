@@ -7,6 +7,8 @@ int count2 = 0;
 int LEDsOn[] = {0,1,2,3,4,5};
 int LEDsOn2[] = {0,1,2,3,4,5};
 int currentState; //reusable
+int level = 0;
+int level2 = 0;
 
 void setup() {
   // put your setup code here, to run once:
@@ -42,17 +44,17 @@ void loop() {
   
   currentState = digitalRead(10);
   if(millis()-startTime > 60000) {
-    turnOnLEDsAt(LEDsOn, 5);
+    level = 5;
   } else if(millis()-startTime > 50000) {
-    turnOnLEDsAt(LEDsOn, 4);
+    level = 4;
   } else if (millis()-startTime > 40000) {
-    turnOnLEDsAt(LEDsOn, 3);
+    level = 3;
   } else if (millis()-startTime > 30000) {
-    turnOnLEDsAt(LEDsOn, 2);
+    level = 2;
   } else if (millis()-startTime > 7000) {
-    turnOnLEDsAt(LEDsOn, 1);
+    level = 1;
   } else if (millis()-startTime > 5000) {
-    turnOnLEDsAt(LEDsOn, 0);
+    level = 0;
   }
   if (state != currentState) {
     state = currentState;
@@ -63,16 +65,17 @@ void loop() {
 
   if (count > 50) {
     Serial.println("Reset");
-    turnOnLEDsAt(LEDsOn, 0);
-      
+    level = 0;
     startTime = millis();
     count = 0;
   } 
   
+  turnOnLEDsAt(LEDsOn, level, level2);
+  
   delay(25);
 }
 
-void turnOnLEDsAt(int LEDs[], int level){
+void turnOnLEDsAt(int LEDs[], int level, int level2){
   Serial.print("At LEVEL: ");
   Serial.println(level);
   for(int i=0; i < level+1; i++){
