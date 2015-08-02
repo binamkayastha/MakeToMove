@@ -25,15 +25,7 @@ void setup() {
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-
-//  Serial.println("Starting");
-
-  // UPDATE LEDsOn
-//  Serial.println(sizeof(LEDsOn));
-  //turnOnLEDsAt(LEDsOn);
-//  delay(1000);
-
+  
   currentState = digitalRead(10);
   if(millis()-startTime > 60000) {
     turnOnLEDsAt(LEDsOn, 5);
@@ -62,6 +54,7 @@ void loop() {
     startTime = millis();
     count = 0;
   } 
+  
   delay(25);
 }
 
@@ -69,9 +62,6 @@ void turnOnLEDsAt(int LEDs[], int level){
   Serial.print("At LEVEL: ");
   Serial.println(level);
   for(int i=0; i < level+1; i++){
-//    Serial.println(sizeof(LEDs));
-//    Serial.print("LED ON:: ");
-//    Serial.println(LEDs[i]);
     turnOnLEDAt(LEDs[i]);
   }
 }
@@ -85,13 +75,6 @@ void turnOnLEDAt(int pos, int machine){
   b = ((int) (pos / 2)) % 2;
   c = pos / 4;
   
-////  Serial.print("a: ");
-//  Serial.println(a);
-////  Serial.print("b: ");
-// Serial.println(b);
-////  Serial.print("c: ");
-//  Serial.println(c);
-////  Serial.println("---------");
   if(machine == 1) {
     digitalWrite(2, c);
     digitalWrite(3, b);
@@ -101,9 +84,7 @@ void turnOnLEDAt(int pos, int machine){
     digitalWrite(6, b);
     digitalWrite(7, a);
   }
-//  digitalWrite(2, LOW);
-//  digitalWrite(3, LOW);
-//  digitalWrite(4, HIGH);
+  
   digitalWrite(12, LOW);
   digitalWrite(13, HIGH);
   delay(50);
