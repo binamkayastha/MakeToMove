@@ -29,10 +29,10 @@ void setup() {
 
 
   //The input of wheel excersize machine
-  pinMode(10, INPUT);
+  pinMode(10, INPUT_PULLUP);
 
   //The input of other excersize macine
-  pinMode(11, INPUT);
+  pinMode(11, INPUT_PULLUP);
 
   //G2A and G2B Low (Connected in circuitry)
   pinMode(12, OUTPUT);
