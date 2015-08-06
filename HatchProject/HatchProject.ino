@@ -2,11 +2,13 @@ unsigned long startTime;
 unsigned long startTime2;
 int state = 0;
 int state2 = 0;
-int count = 0;
-int count2 = 0;
+unsigned long lastChange;
+unsigned long lastChange2;
 int LEDsOn[] = {0,1,2,3,4,5};
 int LEDsOn2[] = {0,1,2,3,4,5};
 int currentState; //reusable
+boolean active;
+boolean active2;
 int level = 0;
 int level2 = 0;
 
@@ -46,67 +48,73 @@ void setup() {
 void loop() {
   
   currentState = digitalRead(10);
-  if(millis()-startTime > 60000) {
-    level = 5;
-  } else if(millis()-startTime > 50000) {
-    level = 4;
-  } else if (millis()-startTime > 40000) {
-    level = 3;
-  } else if (millis()-startTime > 30000) {
-    level = 2;
-  } else if (millis()-startTime > 7000) {
-    level = 1;
-  } else if (millis()-startTime > 5000) {
-    level = 0;
-  }
-  if (state != currentState) {
+  
+  if (state != currentState) { //If there is a change
     state = currentState;
     Serial.println("CHANGE ONE");
-    count = 0; 
-  } else {
-    count++;
-  } 
-
-  if (count > 50) {
-    Serial.println("Reset");
-    level = 0;
+    lastChange = millis();
+    active = true;
+  }
+  if (millis() - lastChange > 20000) {
+    Serial.println("Reset ONE");
+    active = false;
     startTime = millis();
-    count = 0;
-  } 
+    lastChange = millis();
+    level = 0;
+  }
+  
+  if (active) {
+    if(millis()-startTime > 60000) {
+      level = 5;
+    } else if(millis()-startTime > 50000) {
+      level = 4;
+    } else if (millis()-startTime > 40000) {
+      level = 3;
+    } else if (millis()-startTime > 30000) {
+      level = 2;
+    } else if (millis()-startTime > 7000) {
+      level = 1;
+    } else if (millis()-startTime > 5000) {
+      level = 0;
+    }
+  }
   
   currentState = digitalRead(11);
-  if(millis()-startTime2 > 60000) {
-    level2 = 5;
-  } else if(millis()-startTime2 > 50000) {
-    level2 = 4;
-  } else if (millis()-startTime2 > 40000) {
-    level2 = 3;
-  } else if (millis()-startTime2 > 30000) {
-    level2 = 2;
-  } else if (millis()-startTime2 > 7000) {
-    level2 = 1;
-  } else if (millis()-startTime2 > 5000) {
+  
+  if (state2 != currentState) { //If there is a change
+    state2 = currentState;
+    Serial.println("CHANGE TWO"); 
+    lastChange2 = millis();
+    active2 = true;
+  }
+  
+  if (millis() - lastChange2 > 20000) {
+    Serial.println("Reset TWO");
+    active2 = false;
+    startTime2 = millis();
+    lastChange2 = millis();
     level2 = 0;
   }
-  if (state2 != currentState) {
-    state2 = currentState;
-    Serial.println("CHANGE TWO");
-    count2 = 0; 
-  } else {
-    count2++;
-  } 
-
-  if (count2 > 50) {
-    Serial.println("Reset");
-    level2 = 0;
-    startTime2 = millis();
-    count2 = 0;
-  } 
   
+  if (active2) {
+    if(millis()-startTime2 > 60000) {
+      level2 = 5;
+    } else if(millis()-startTime2 > 50000) {
+      level2 = 4;
+    } else if (millis()-startTime2 > 40000) {
+      level2 = 3;
+    } else if (millis()-startTime2 > 30000) {
+      level2 = 2;
+    } else if (millis()-startTime2 > 7000) {
+      level2 = 1;
+    } else if (millis()-startTime2 > 5000) {
+      level2 = 0;
+    }
+  }
   
   turnOnLEDsAt(LEDsOn, level, level2);
   
-  delay(50);
+  delay(100);
 }
 int leveltest = 0;
 int leveltest2 = 0;
