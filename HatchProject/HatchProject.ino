@@ -1,7 +1,7 @@
 unsigned long startTime;
 unsigned long startTime2;
 int state = 0;
-int count2 = 0;
+int state2 = 0;
 int count = 0;
 int count2 = 0;
 int LEDsOn[] = {0,1,2,3,4,5};
@@ -61,6 +61,7 @@ void loop() {
   }
   if (state != currentState) {
     state = currentState;
+    Serial.println("CHANGE ONE");
     count = 0; 
   } else {
     count++;
@@ -74,44 +75,52 @@ void loop() {
   } 
   
   currentState = digitalRead(11);
-  if(millis()-startTime > 60000) {
+  if(millis()-startTime2 > 60000) {
     level2 = 5;
-  } else if(millis()-startTime > 50000) {
+  } else if(millis()-startTime2 > 50000) {
     level2 = 4;
-  } else if (millis()-startTime > 40000) {
+  } else if (millis()-startTime2 > 40000) {
     level2 = 3;
-  } else if (millis()-startTime > 30000) {
+  } else if (millis()-startTime2 > 30000) {
     level2 = 2;
-  } else if (millis()-startTime > 7000) {
+  } else if (millis()-startTime2 > 7000) {
     level2 = 1;
-  } else if (millis()-startTime > 5000) {
+  } else if (millis()-startTime2 > 5000) {
     level2 = 0;
   }
-  if (state != currentState) {
+  if (state2 != currentState) {
     state2 = currentState;
+    Serial.println("CHANGE TWO");
     count2 = 0; 
   } else {
     count2++;
   } 
 
-  if (count > 50) {
+  if (count2 > 50) {
     Serial.println("Reset");
     level2 = 0;
-    startTime = millis();
-    count = 0;
+    startTime2 = millis();
+    count2 = 0;
   } 
   
   
   turnOnLEDsAt(LEDsOn, level, level2);
   
-  delay(25);
+  delay(50);
 }
-
+int leveltest = 0;
+int leveltest2 = 0;
 void turnOnLEDsAt(int LEDs[], int level, int level2){
-  Serial.print("LEVEL1 At: ");
-  Serial.println(level);
-  Serial.print("LEVEL2 At: ");
-  Serial.println(leve2);
+  if (level != leveltest) {
+    Serial.print("LEVEL1 At: ");
+    Serial.println(level);
+    leveltest = level;
+  }
+  if(level2 != leveltest2) {
+    Serial.print("LEVEL2 At: ");
+    Serial.println(level2);
+    leveltest2 = level2;
+  }
   //The level that is larger, did a complete loop before
   if(level > level2) {
     i = 0;
@@ -141,6 +150,17 @@ void turnOnLEDAt(int pos, int pos2){
   a = b = c = 0;
   
   // assume pos max is 8
+  /*
+  # -> cba
+  0 -> 000
+  1 -> 001
+  2 -> 010
+  3 -> 011
+  4 -> 100
+  5 -> 101
+  6 -> 110
+  7 -> 111
+  */
   a = pos %2;
   b = ((int) (pos / 2)) % 2;
   c = pos / 4;
