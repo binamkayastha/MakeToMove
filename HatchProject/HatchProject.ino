@@ -140,19 +140,19 @@ void turnOnLEDsAt(int LEDs[], int level, int level2){
     j = 0;
   }
     
-  for(i; i < max(level, level2); i++){
-    //The next two if statmenets are there for the lower level,
-    //  so that the it keeps looping, even with the second one.
+  counter = 0;
+  while(counter < max(level, level2)) {
     if (i>=level) {
-      i = 0;
-    }
-    if (j>=level2) {
-      j = 0;
-    }
-    turnOnLEDAt(i, j);
-    j++;
+        i = 0;
+      }
+      if (j>=level2) {
+        j = 0;
+      }
+      turnOnLEDAt(i, j);
+      i++;
+      j++;
+      counter ==:      
   }
-}
 
 void turnOnLEDAt(int pos, int pos2){
   int a, b, c;
