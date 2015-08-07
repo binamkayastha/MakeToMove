@@ -1,0 +1,62 @@
+import arb.soundcipher.*;
+import arb.soundcipher.constants.*;
+
+import processing.serial.*;
+Serial myPort;  // Create object from Serial class
+String input;     // Data received from the serial port
+int val;
+SoundCipher sc = new SoundCipher(this);
+
+void setup() {
+  String portName = Serial.list()[0]; //change the 0 to a 1 or 2 etc. to match your port
+  myPort = new Serial(this, portName, 9600); 
+}
+
+void draw()
+{
+  if ( myPort.available() > 0) 
+  {  // If data is available,
+    input = myPort.readStringUntil('\n');         // read it and store it in val
+    
+    if(input != null){
+      println(input);
+      input = input.trim();
+      val = Integer.parseInt(input);
+      int base = 59;
+      
+      if(val > 100){
+        int instrument = 1;
+        switch(val){
+          case 102:
+            instrument = 1;
+            break;
+          case 103:
+            instrument = 25;
+            break;
+          case 104:
+            instrument = 65;
+            break;
+          case 105:
+            instrument = 49;
+            break;
+          case 106:
+            instrument = 57;
+            break;
+          case 107:
+            instrument = (int)random(100);
+            break;
+        }
+        sc.sendMidi(sc.PROGRAM_CHANGE, 0, instrument, 0);
+      }
+      
+      
+      if(val > 0 && val < 13){
+        println(val);
+        sc.sendMidi(sc.NOTE_ON, 0, base + val, 200);
+      } else if(val < 0 && val > -13){
+        println(val);
+        sc.sendMidi(sc.NOTE_OFF, 0, base - val, 100);
+      }
+    } 
+  }
+}
