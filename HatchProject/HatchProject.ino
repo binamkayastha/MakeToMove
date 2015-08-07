@@ -4,8 +4,8 @@ int state = 0;
 int state2 = 0;
 unsigned long lastChange;
 unsigned long lastChange2;
-int LEDsOn[] = {0,1,2,3,4,5};
-int LEDsOn2[] = {0,1,2,3,4,5};
+int LEDsOn[] = {0,1,2,3,4};
+int LEDsOn2[] = {0,1,2,3,4};
 int currentState; //reusable
 boolean active;
 boolean active2;
@@ -38,8 +38,12 @@ void setup() {
 
   //G2A and G2B Low (Connected in circuitry)
   pinMode(12, OUTPUT);
-  pinMode(13, OUTPUT);
+//  pinMode(13, OUTPUT);
   
+  //OUTPUT TO THE BUBBLE GUN
+  pinMode(8, OUTPUT);
+  pinMode(13, OUTPUT);
+    
   //Initializing start times
   startTime = millis();
   startTime2 = millis();
@@ -58,25 +62,33 @@ void loop() {
   if (millis() - lastChange > 10000) {
     Serial.println("Reset ONE");
     active = false;
-    startTime = millis();
+
     lastChange = millis();
     level--;
-    if(level < 0) {level = 0;}
+    if(level < 0) {level = 0;}    
+    startTime = millis();
+    startTime -= (level+1)*5000;
   }
   
   if (active) {
-    if(millis()-startTime > 60000) {
-      level = 5;
-    } else if(millis()-startTime > 50000) {
+    if(millis()-startTime > 30000) {
+      digitalWrite(8, HIGH);
+      Serial.println("8 Yay");
+    } else if(millis()-startTime > 25000) {
       level = 4;
-    } else if (millis()-startTime > 40000) {
+      digitalWrite(8, LOW);
+    } else if (millis()-startTime > 20000) {
       level = 3;
-    } else if (millis()-startTime > 30000) {
+      digitalWrite(8, LOW);
+    } else if (millis()-startTime > 15000) {
       level = 2;
-    } else if (millis()-startTime > 7000) {
+      digitalWrite(8, LOW);
+    } else if (millis()-startTime > 10000) {
       level = 1;
+      digitalWrite(8, LOW);
     } else if (millis()-startTime > 5000) {
       level = 0;
+      digitalWrite(8, LOW);
     }
   }
   
@@ -92,25 +104,33 @@ void loop() {
   if (millis() - lastChange2 > 10000) {
     Serial.println("Reset TWO");
     active2 = false;
-    startTime2 = millis();
     lastChange2 = millis();
     level2--;
     if (level2 < 0) {level2 = 0;}
+    startTime2 = millis();
+    startTime2 -= (level2+1)*5000;
+    digitalWrite(13, LOW);
   }
   
   if (active2) {
-    if(millis()-startTime2 > 60000) {
-      level2 = 5;
-    } else if(millis()-startTime2 > 50000) {
+    if(millis()-startTime2 > 30000) {
+      digitalWrite(13, HIGH);
+      Serial.println("13 Yay");
+    } else if(millis()-startTime2 > 25000) {
       level2 = 4;
-    } else if (millis()-startTime2 > 40000) {
+      digitalWrite(13, LOW);
+    } else if (millis()-startTime2 > 20000) {
       level2 = 3;
-    } else if (millis()-startTime2 > 30000) {
+      digitalWrite(13, LOW);
+    } else if (millis()-startTime2 > 15000) {
       level2 = 2;
-    } else if (millis()-startTime2 > 7000) {
+      digitalWrite(13, LOW);
+    } else if (millis()-startTime2 > 10000) {
       level2 = 1;
+      digitalWrite(13, LOW);
     } else if (millis()-startTime2 > 5000) {
       level2 = 0;
+      digitalWrite(13, LOW);
     }
   }
   
@@ -142,11 +162,11 @@ void turnOnLEDsAt(int LEDs[], int level, int level2){
     j = 0;
   }
     
-  for(int counter = 0; counter < max(level, level2); counter++) {
-    if (i>=level) {
+  for(int counter = 0; counter < max(level, level2)+1; counter++) {
+    if (i>level) {
         i = 0;
       }
-      if (j>=level2) {
+      if (j>level2) {
         j = 0;
       }
       turnOnLEDAt(i, j);
@@ -189,7 +209,7 @@ void turnOnLEDAt(int pos, int pos2){
   
   
   digitalWrite(12, LOW);
-  digitalWrite(13, HIGH);
+//  digitalWrite(13, HIGH);
   delay(50);
 }
 
