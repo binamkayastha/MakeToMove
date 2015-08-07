@@ -119,6 +119,7 @@ void loop() {
 int leveltest = 0;
 int leveltest2 = 0;
 void turnOnLEDsAt(int LEDs[], int level, int level2){
+  
   if (level != leveltest) {
     Serial.print("LEVEL1 At: ");
     Serial.println(level);
@@ -142,10 +143,10 @@ void turnOnLEDsAt(int LEDs[], int level, int level2){
   for(i; i < max(level, level2); i++){
     //The next two if statmenets are there for the lower level,
     //  so that the it keeps looping, even with the second one.
-    if (i>level) {
+    if (i>=level) {
       i = 0;
     }
-    if (j>level2) {
+    if (j>=level2) {
       j = 0;
     }
     turnOnLEDAt(i, j);
