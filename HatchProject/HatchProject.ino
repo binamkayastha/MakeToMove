@@ -55,12 +55,13 @@ void loop() {
     lastChange = millis();
     active = true;
   }
-  if (millis() - lastChange > 20000) {
+  if (millis() - lastChange > 10000) {
     Serial.println("Reset ONE");
     active = false;
     startTime = millis();
     lastChange = millis();
-    level = 0;
+    level--;
+    if(level < 0) {level = 0;}
   }
   
   if (active) {
@@ -88,12 +89,13 @@ void loop() {
     active2 = true;
   }
   
-  if (millis() - lastChange2 > 20000) {
+  if (millis() - lastChange2 > 10000) {
     Serial.println("Reset TWO");
     active2 = false;
     startTime2 = millis();
     lastChange2 = millis();
-    level2 = 0;
+    level2--;
+    if (level2 < 0) {level2 = 0;}
   }
   
   if (active2) {
@@ -140,8 +142,7 @@ void turnOnLEDsAt(int LEDs[], int level, int level2){
     j = 0;
   }
     
-  counter = 0;
-  while(counter < max(level, level2)) {
+  for(int counter = 0; counter < max(level, level2); counter++) {
     if (i>=level) {
         i = 0;
       }
@@ -151,8 +152,8 @@ void turnOnLEDsAt(int LEDs[], int level, int level2){
       turnOnLEDAt(i, j);
       i++;
       j++;
-      counter ==:      
   }
+}
 
 void turnOnLEDAt(int pos, int pos2){
   int a, b, c;
