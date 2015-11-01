@@ -212,8 +212,7 @@ void turnOnLEDAt(int pos, int pos2){
 //  digitalWrite(13, HIGH);
   delay(50);
   
-  // These are some temporary comments
-  // Here's some more
+  // These are some temporary commentsmore
 }
 
 
